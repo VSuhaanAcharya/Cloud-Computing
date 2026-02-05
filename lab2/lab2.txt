@@ -1,0 +1,149 @@
+Welcome to Cloud Shell! Type "help" to get started, or type "gemini" to try prompting with Gemini CLI.
+Your Cloud Platform project in this session is set to alpine-bond-486508-k0.
+Use `gcloud config set project [PROJECT_ID]` to change to a different project.
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud services pubsub.googleapis.com
+ERROR: (gcloud.services) Invalid choice: 'pubsub.googleapis.com'.
+Maybe you meant:
+  gcloud network-services
+  gcloud pubsub
+  gcloud services
+
+To search the help text of gcloud commands, run:
+  gcloud help -- SEARCH_TERMS
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud services enable pubsub.googleapis.com
+Operation "operations/acf.p2-582492155992-5fcdb2af-ed7d-4ffc-9681-aa765d242fa8" finished successfully.
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics create my-topic
+Created topic [projects/alpine-bond-486508-k0/topics/my-topic].
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub subscriptions create my-subscription --topic=my-topic
+Created subscription [projects/alpine-bond-486508-k0/subscriptions/my-subscription].
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="hello,Pub/sub:"
+messageIds:
+- '17933185077317975'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub subscriptions pull my-subscription --auto-ack
+DATA: hello,Pub/sub:
+MESSAGE_ID: 17933185077317975
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ 
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ 
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ 
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub  subscriptions pull my-subscription --auto-ack --limit=10
+DATA: Message10
+MESSAGE_ID: 17934771254632457
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message1
+MESSAGE_ID: 17933189400745435
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message2
+MESSAGE_ID: 17932801674079417
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message3
+MESSAGE_ID: 17934846239777701
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message4
+MESSAGE_ID: 17934859672567521
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message5
+MESSAGE_ID: 17933185719565215
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message6
+MESSAGE_ID: 17934869716188433
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message7
+MESSAGE_ID: 17935361589049635
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message8
+MESSAGE_ID: 17932724030032584
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+
+DATA: Message9
+MESSAGE_ID: 17934870424722490
+ORDERING_KEY: 
+ATTRIBUTES: 
+DELIVERY_ATTEMPT: 
+ACK_STATUS: SUCCESS
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub subscriptions delete my-subscription
+Deleted subscription [projects/alpine-bond-486508-k0/subscriptions/my-subscription].
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics delete my-topic
+Deleted topic [projects/alpine-bond-486508-k0/topics/my-topic].
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ ^C
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ 
+
+
+
+
+
+
+
+termninal--2
+
+Welcome to Cloud Shell! Type "help" to get started, or type "gemini" to try prompting with Gemini CLI.
+Your Cloud Platform project in this session is set to alpine-bond-486508-k0.
+Use `gcloud config set project [PROJECT_ID]` to change to a different project.
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message1"
+messageIds:
+- '17933189400745435'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message2"
+messageIds:
+- '17932801674079417'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message3"                                                                                                                                 
+messageIds:
+- '17934846239777701'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message4"                                                                                                                                 
+messageIds:
+- '17934859672567521'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message5"                                                                                                                                 
+messageIds:
+- '17933185719565215'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message6"                                                                                                                                 
+messageIds:
+- '17934869716188433'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message7"
+messageIds:
+- '17935361589049635'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message8"                                                                                                                                 
+messageIds:
+- '17932724030032584'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message9"
+messageIds:
+- '17934870424722490'
+suhaan_23cs178@cloudshell:~ (alpine-bond-486508-k0)$ gcloud pubsub topics publish my-topic --message="Message10"                                                                                                                                
+messageIds:
+- '17934771254632457'
