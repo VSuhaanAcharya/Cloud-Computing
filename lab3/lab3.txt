@@ -1,0 +1,98 @@
+Welcome to Cloud Shell! Type "help" to get started, or type "gemini" to try prompting with Gemini CLI.
+Your Cloud Platform project in this session is set to glassy-droplet-476707-b8.
+Use `gcloud config set project [PROJECT_ID]` to change to a different project.
+suhaan_23cs178@cloudshell:~ (glassy-droplet-476707-b8)$ mkdir my app
+suhaan_23cs178@cloudshell:~ (glassy-droplet-476707-b8)$ cd my app
+-bash: cd: too many arguments
+suhaan_23cs178@cloudshell:~ (glassy-droplet-476707-b8)$ mkdir myapp
+suhaan_23cs178@cloudshell:~ (glassy-droplet-476707-b8)$ cd myapp
+suhaan_23cs178@cloudshell:~/myapp (glassy-droplet-476707-b8)$ vi main.py
+suhaan_23cs178@cloudshell:~/myapp (glassy-droplet-476707-b8)$ vi requirement.txt
+suhaan_23cs178@cloudshell:~/myapp (glassy-droplet-476707-b8)$ vi app.yaml
+suhaan_23cs178@cloudshell:~/myapp (glassy-droplet-476707-b8)$ gcloud auth login
+
+You are already authenticated with gcloud when running
+inside the Cloud Shell and so do not need to run this
+command. Do you wish to proceed anyway?
+
+Do you want to continue (Y/n)?  y
+
+Go to the following link in your browser, and complete the sign-in prompts:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940559.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fsdk.cloud.google.com%2Fauthcode.html&scope=openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fappengine.admin+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fsqlservice.login+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcompute+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Faccounts.reauth&state=eZOiEEHXcg7hm8DJLQYYVpeknA7vTz&prompt=consent&token_usage=remote&access_type=offline&code_challenge=QhxvjqOqPnRh5K63f__6pap4LLGFHWURcz1_loSFgec&code_challenge_method=S256
+
+Once finished, enter the verification code provided in your browser: 4/0ASc3gC2qGgqAcwhyVzpmEmqRpwoqiLt93zSqf0H0AeIBkIG5xZ0v1wMJmuN9WLi5NdNU9Q
+
+You are now logged in as [suhaan.23cs178@sode-edu.in].
+Your current project is [glassy-droplet-476707-b8].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+suhaan_23cs178@cloudshell:~/myapp (glassy-droplet-476707-b8)$ gcloud init
+Welcome! This command will take you through the configuration of gcloud.
+
+Settings from your current configuration [cloudshell-10094] are:
+accessibility:
+  screen_reader: 'True'
+component_manager:
+  disable_update_check: 'True'
+compute:
+  gce_metadata_read_timeout_sec: '30'
+core:
+  account: suhaan.23cs178@sode-edu.in
+  disable_usage_reporting: 'False'
+  project: glassy-droplet-476707-b8
+  universe_domain: googleapis.com
+metrics:
+  environment: devshell
+
+Pick configuration to use:
+ [1] Re-initialize this configuration [cloudshell-10094] with new settings 
+ [2] Create a new configuration
+Please enter your numeric choice:  1
+
+Your current configuration has been set to: [cloudshell-10094]
+
+You can skip diagnostics next time by using the following flag:
+You can skip diagnostics next time by using the following flag:
+  gcloud init --skip-diagnostics
+
+Network diagnostic detects and fixes local network connection issues.
+Checking network connection...done.                                                                                                                                                          
+Reachability Check passed.
+Network diagnostic passed (1/1 checks passed).
+
+Choose the account you want to use for this configuration.
+To use a federated user account, exit this command and sign in to the gcloud CLI with your login configuration file, then run this command again.
+
+Select an account:
+ [1] suhaan.23cs178@sode-edu.in
+ [2] Sign in with a new Google Account
+ [3] Skip this step
+Please enter your numeric choice:  3
+
+The Google Cloud CLI is configured and ready to use!
+
+* Commands that require authentication will use suhaan.23cs178@sode-edu.in by default
+Run `gcloud help config` to learn how to change individual settings
+
+This gcloud configuration is called [cloudshell-10094]. You can create additional configurations if you work with multiple accounts and/or projects.
+Run `gcloud topic configurations` to learn more.
+
+Some things to try next:
+
+* Run `gcloud --help` to see the Cloud Platform services you can interact with. And run `gcloud help COMMAND` to get help on any gcloud command.
+* Run `gcloud topic --help` to learn about advanced features of the CLI like arg files and output formatting
+* Run `gcloud cheat-sheet` to see a roster of go-to `gcloud` commands.
+suhaan_23cs178@cloudshell:~/myapp$ python3 main.py
+  File "/home/suhaan_23cs178/myapp/main.py", line 6
+    if __name__ == '__main__":
+                   ^
+SyntaxError: unterminated string literal (detected at line 6)
+suhaan_23cs178@cloudshell:~/myapp$ vi main.py
+suhaan_23cs178@cloudshell:~/myapp$ python3 main.py
+ * Serving Flask app 'main'
+ * Debug mode: off
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+127.0.0.1 - - [12/Feb/2026 09:10:45] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [12/Feb/2026 09:10:45] "GET /favicon.ico HTTP/1.1" 404 -
