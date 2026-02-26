@@ -1,0 +1,79 @@
+Initialising Scenario... done
+
+ubuntu:~$ vi app.py
+ubuntu:~$ vi Dockerfile
+ubuntu:~$ docker build -t flask-webapp .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.09kB
+Step 1/6 : FROM python:3.10-slim
+3.10-slim: Pulling from library/python
+206356c42440: Pulling fs layer
+695b0c6490ce: Pulling fs layer
+5966c70ebec2: Pulling fs layer
+6b8e12a61ce5: Pulling fs layer
+6b8e12a61ce5: Waiting
+695b0c6490ce: Verifying Checksum
+695b0c6490ce: Download complete
+6b8e12a61ce5: Verifying Checksum
+6b8e12a61ce5: Download complete
+206356c42440: Verifying Checksum
+206356c42440: Download complete
+5966c70ebec2: Verifying Checksum
+5966c70ebec2: Download complete
+206356c42440: Pull complete
+695b0c6490ce: Pull complete
+5966c70ebec2: Pull complete
+6b8e12a61ce5: Pull complete
+Digest: sha256:6a5861123aa815f92e5d20ce8372a8ba6668540c1081e5c4c44933cc1ba4fd3a
+Status: Downloaded newer image for python:3.10-slim
+ ---> cc586caabe4b
+Step 2/6 : WORKDIR /app
+ ---> Running in be7e1051470d
+ ---> Removed intermediate container be7e1051470d
+ ---> 1ffc90d39760
+Step 3/6 : COPY app.py .
+ ---> b0e4db3aeb4e
+Step 4/6 : RUN pip install flask
+ ---> Running in 011b87e8a416
+Collecting flask
+  Downloading flask-3.1.3-py3-none-any.whl (103 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 103.4/103.4 kB 4.3 MB/s eta 0:00:00
+Collecting blinker>=1.9.0
+  Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Collecting click>=8.1.3
+  Downloading click-8.3.1-py3-none-any.whl (108 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 108.3/108.3 kB 4.8 MB/s eta 0:00:00
+Collecting markupsafe>=2.1.1
+  Downloading markupsafe-3.0.3-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (20 kB)
+Collecting itsdangerous>=2.2.0
+  Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Collecting jinja2>=3.1.2
+  Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 4.2 MB/s eta 0:00:00
+Collecting werkzeug>=3.1.0
+  Downloading werkzeug-3.1.6-py3-none-any.whl (225 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 225.2/225.2 kB 6.7 MB/s eta 0:00:00
+Installing collected packages: markupsafe, itsdangerous, click, blinker, werkzeug, jinja2, flask
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Successfully installed blinker-1.9.0 click-8.3.1 flask-3.1.3 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.3 werkzeug-3.1.6
+
+[notice] A new release of pip is available: 23.0.1 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 011b87e8a416
+ ---> 5cb42df6dc5a
+Step 5/6 : EXPOSE 8080
+ ---> Running in ed9f2148cab3
+ ---> Removed intermediate container ed9f2148cab3
+ ---> da56737ba7f2
+Step 6/6 : CMD ["python3","app.py"]
+ ---> Running in ce129e023fd2
+ ---> Removed intermediate container ce129e023fd2
+ ---> 46eb57c6d159
+Successfully built 46eb57c6d159
+Successfully tagged flask-webapp:latest
+ubuntu:~$ docker run -d -p 8080:8080 flask-webapp
+bf9357f5b4193c5d800678a4c0de3960d51d3257b0a6b357f60661a72631253e
+ubuntu:~$ 
