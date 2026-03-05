@@ -1,0 +1,77 @@
+------------------------TAB1----------------------------------------------------
+Initialising Scenario.......... done
+
+ubuntu:~$ vi lambda_function.py
+ubuntu:~$ vi Dockerfile
+ubuntu:~$ hostname -I
+172.30.1.2 172.17.0.1 10.88.0.1 
+ubuntu:~$ docker build -t my-lambda .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  25.09kB
+Step 1/3 : From public.ecr.aws/lambda/python:3.9
+3.9: Pulling from lambda/python
+83e01f18b8b6: Pulling fs layer
+f828eabd8c6c: Pulling fs layer
+ca5c1a246384: Pulling fs layer
+b0586e0cf52d: Pulling fs layer
+001d6bb0cfaf: Pulling fs layer
+cc231417518d: Pulling fs layer
+b0586e0cf52d: Waiting
+001d6bb0cfaf: Waiting
+cc231417518d: Waiting
+ca5c1a246384: Verifying Checksum
+ca5c1a246384: Download complete
+f828eabd8c6c: Verifying Checksum
+f828eabd8c6c: Download complete
+83e01f18b8b6: Verifying Checksum
+83e01f18b8b6: Download complete
+b0586e0cf52d: Verifying Checksum
+b0586e0cf52d: Download complete
+cc231417518d: Verifying Checksum
+cc231417518d: Download complete
+001d6bb0cfaf: Verifying Checksum
+001d6bb0cfaf: Download complete
+83e01f18b8b6: Pull complete
+f828eabd8c6c: Pull complete
+ca5c1a246384: Pull complete
+b0586e0cf52d: Pull complete
+001d6bb0cfaf: Pull complete
+cc231417518d: Pull complete
+Digest: sha256:61eae9d7a681ae83b247da899ca82a22c66225dc45c26135618af202604ea71e
+Status: Downloaded newer image for public.ecr.aws/lambda/python:3.9
+ ---> 42fbf2118829
+Step 2/3 : COPY lambda_function.py .
+ ---> b472c3d50905
+Step 3/3 : CMD ["lambda_function.lambda_handler"]
+ ---> Running in 43d1c5e22bee
+ ---> Removed intermediate container 43d1c5e22bee
+ ---> 3429b240cd7f
+Successfully built 3429b240cd7f
+Successfully tagged my-lambda:latest
+ubuntu:~$ docker run -p 9000:8080 my-lambda
+05 Mar 2026 09:14:31,252 [INFO] (rapid) exec '/var/runtime/bootstrap' (cwd=/var/task, handler=)
+05 Mar 2026 09:19:32,828 [INFO] (rapid) INIT START(type: on-demand, phase: init)
+05 Mar 2026 09:19:32,828 [INFO] (rapid) The extension's directory "/opt/extensions" does not exist, assuming no extensions to be loaded.
+05 Mar 2026 09:19:32,828 [INFO] (rapid) Starting runtime without AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN , Expected?: false
+START RequestId: 4140ef89-3d6d-4c61-a16c-52fd653eb768 Version: $LATEST
+05 Mar 2026 09:19:32,887 [INFO] (rapid) INIT RTDONE(status: success)
+05 Mar 2026 09:19:32,887 [INFO] (rapid) INIT REPORT(durationMs: 59.146000)
+05 Mar 2026 09:19:32,888 [INFO] (rapid) INVOKE START(requestId: 4140ef89-3d6d-4c61-a16c-52fd653eb768)
+05 Mar 2026 09:19:32,890 [INFO] (rapid) INVOKE RTDONE(status: success, produced bytes: 0, duration: 1.387000ms)
+END RequestId: 4140ef89-3d6d-4c61-a16c-52fd653eb768
+REPORT RequestId: 4140ef89-3d6d-4c61-a16c-52fd653eb768  Init Duration: 0.04 ms  Duration: 61.59 ms      Billed Duration: 62 ms  Memory Size: 3008 MB    Max Memory Used: 3008 MB
+05 Mar 2026 09:20:48,155 [INFO] (rapid) INVOKE START(requestId: c6274770-c0dc-4602-9000-80e74d38258f)
+START RequestId: c6274770-c0dc-4602-9000-80e74d38258f Version: $LATEST
+05 Mar 2026 09:20:48,156 [INFO] (rapid) INVOKE RTDONE(status: success, produced bytes: 0, duration: 0.958000ms)
+END RequestId: c6274770-c0dc-4602-9000-80e74d38258f
+REPORT RequestId: c6274770-c0dc-4602-9000-80e74d38258f  Duration: 1.31 ms       Billed Duration: 2 ms   Memory Size: 3008 MB    Max Memory Used: 3008 MB
+
+
+
+--------TAB2-----------------------------
+ubuntu:~$ curl -XPOST "http://172.30.1.2:9000/2015-03-31/functions/function/invocations" -d'{}'
+{"statusCode": 200, "body": "Hello from Lambda!"}ubuntu:~$ 
+
