@@ -1,0 +1,197 @@
+Initialising Scenario.............. done
+
+root@ubuntu:~$ mkdir project
+root@ubuntu:~$ cd project
+root@ubuntu:~/project$ mkdir input output resize watermark
+root@ubuntu:~/project$ cd resize
+root@ubuntu:~/project/resize$ vi app.py
+root@ubuntu:~/project/resize$ cd ..
+root@ubuntu:~/project$ cd resize    
+root@ubuntu:~/project/resize$ vi Dockerfile
+root@ubuntu:~/project/resize$ cd ...
+bash: cd: ...: No such file or directory
+root@ubuntu:~/project/resize$ cd ..
+root@ubuntu:~/project$ cd watermark
+root@ubuntu:~/project/watermark$ vi app.py
+root@ubuntu:~/project/watermark$ vi Dockerfile
+root@ubuntu:~/project/watermark$ cd ..
+root@ubuntu:~/project$ docker build -t resize-image ./resize
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM python:3.11-slim
+3.11-slim: Pulling from library/python
+ec781dee3f47: Pulling fs layer
+6944007a5b45: Pulling fs layer
+e35b92e2619d: Pulling fs layer
+7524aba74b8c: Pulling fs layer
+7524aba74b8c: Waiting
+6944007a5b45: Verifying Checksum
+6944007a5b45: Download complete
+ec781dee3f47: Verifying Checksum
+ec781dee3f47: Download complete
+e35b92e2619d: Verifying Checksum
+e35b92e2619d: Download complete
+7524aba74b8c: Verifying Checksum
+7524aba74b8c: Download complete
+ec781dee3f47: Pull complete
+6944007a5b45: Pull complete
+e35b92e2619d: Pull complete
+7524aba74b8c: Pull complete
+Digest: sha256:9358444059ed78e2975ada2c189f1c1a3144a5dab6f35bff8c981afb38946634
+Status: Downloaded newer image for python:3.11-slim
+ ---> e67db9b14d09
+Step 2/5 : RUN pip install pillow
+ ---> Running in 45947bc5bf23
+Collecting pillow
+  Downloading pillow-12.2.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (8.8 kB)
+Downloading pillow-12.2.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.1/7.1 MB 9.0 MB/s eta 0:00:00
+Installing collected packages: pillow
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+Successfully installed pillow-12.2.0
+
+[notice] A new release of pip is available: 24.0 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 45947bc5bf23
+ ---> c41831750941
+Step 3/5 : WORKDIR /app
+ ---> Running in 62e2a9a18740
+ ---> Removed intermediate container 62e2a9a18740
+ ---> d96d3b55f6e4
+Step 4/5 : COPY app.py .
+ ---> 7a8a45e4c710
+Step 5/5 : CMD ["python", "app.py"]
+ ---> Running in f6dacac08a50
+ ---> Removed intermediate container f6dacac08a50
+ ---> bebe82ce5f93
+Successfully built bebe82ce5f93
+Successfully tagged resize-image:latest
+root@ubuntu:~/project$ docker build -t watermark-image ./watermark
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM python:3.11-slim
+ ---> e67db9b14d09
+Step 2/5 : RUN pip install pillow
+ ---> Using cache
+ ---> c41831750941
+Step 3/5 : WORKDIR /app
+ ---> Using cache
+ ---> d96d3b55f6e4
+Step 4/5 : COPY app.py .
+ ---> 794594ad8852
+Step 5/5 : CMD ["python", "app.py"]
+ ---> Running in 6ab4ddf3c878
+ ---> Removed intermediate container 6ab4ddf3c878
+ ---> 6b8fac5d8860
+Successfully built 6b8fac5d8860
+Successfully tagged watermark-image:latest
+root@ubuntu:~/project$ wget -O input/image.jpg https://picsum.photos/600/400
+--2026-04-02 10:14:35--  https://picsum.photos/600/400
+Resolving picsum.photos (picsum.photos)... 104.26.5.30, 104.26.4.30, 172.67.74.163, ...
+Connecting to picsum.photos (picsum.photos)|104.26.5.30|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://fastly.picsum.photos/id/903/600/400.jpg?hmac=1ZCgCbIITrwvsHknjDDulgg6QnFUdoUar5e7S0YRZgw [following]
+--2026-04-02 10:14:35--  https://fastly.picsum.photos/id/903/600/400.jpg?hmac=1ZCgCbIITrwvsHknjDDulgg6QnFUdoUar5e7S0YRZgw
+Resolving fastly.picsum.photos (fastly.picsum.photos)... 151.101.193.91, 151.101.65.91, 151.101.1.91, ...
+Connecting to fastly.picsum.photos (fastly.picsum.photos)|151.101.193.91|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 33975 (33K) [image/jpeg]
+Saving to: 'input/image.jpg'
+
+input/image.jpg                          100%[==================================================================================>]  33.18K  --.-KB/s    in 0s      
+
+2026-04-02 10:14:35 (181 MB/s) - 'input/image.jpg' saved [33975/33975]
+
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output resize-image
+Resizing image ...
+Image resized and saved!
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output watermark-image
+  File "/app/app.py", line 9
+    draw.text((50,50),"sample watermark", fill=(0,255,128). font=font)
+                                                                ^
+SyntaxError: invalid syntax
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output watermark-image
+  File "/app/app.py", line 9
+    draw.text((50,50),"sample watermark", fill=(0,255,128). font=font)
+                                                                ^
+SyntaxError: invalid syntax
+root@ubuntu:~/project$ cd watermark
+root@ubuntu:~/project/watermark$ vi app.py
+root@ubuntu:~/project/watermark$ cd ..                                      
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output watermark-image
+  File "/app/app.py", line 9
+    draw.text((50,50),"sample watermark", fill=(0,255,128). font=font)
+                                                                ^
+SyntaxError: invalid syntax
+root@ubuntu:~/project$ ^C
+root@ubuntu:~/project$ cd watermark
+root@ubuntu:~/project/watermark$ vi app.py
+root@ubuntu:~/project/watermark$ cd ..
+root@ubuntu:~/project$ docker build -t watermark-image ./watermark
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  3.072kB
+Step 1/5 : FROM python:3.11-slim
+ ---> e67db9b14d09
+Step 2/5 : RUN pip install pillow
+ ---> Using cache
+ ---> c41831750941
+Step 3/5 : WORKDIR /app
+ ---> Using cache
+ ---> d96d3b55f6e4
+Step 4/5 : COPY app.py .
+ ---> c356b9be9d4c
+Step 5/5 : CMD ["python", "app.py"]
+ ---> Running in f7783d5ba896
+ ---> Removed intermediate container f7783d5ba896
+ ---> a8848e3856b7
+Successfully built a8848e3856b7
+Successfully tagged watermark-image:latest
+root@ubuntu:~/project$ wget -O input/image.jpg https://picsum.photos/600/400
+--2026-04-02 10:26:56--  https://picsum.photos/600/400
+Resolving picsum.photos (picsum.photos)... 104.26.5.30, 104.26.4.30, 172.67.74.163, ...
+Connecting to picsum.photos (picsum.photos)|104.26.5.30|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://fastly.picsum.photos/id/129/600/400.jpg?hmac=NsxhinMkbblm7RqaAxfzA_jGZMeZLkv9VNNJuO9Swdw [following]
+--2026-04-02 10:26:57--  https://fastly.picsum.photos/id/129/600/400.jpg?hmac=NsxhinMkbblm7RqaAxfzA_jGZMeZLkv9VNNJuO9Swdw
+Resolving fastly.picsum.photos (fastly.picsum.photos)... 151.101.193.91, 151.101.129.91, 151.101.1.91, ...
+Connecting to fastly.picsum.photos (fastly.picsum.photos)|151.101.193.91|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 20841 (20K) [image/jpeg]
+Saving to: 'input/image.jpg'
+
+input/image.jpg                          100%[==================================================================================>]  20.35K  --.-KB/s    in 0s      
+
+2026-04-02 10:26:57 (190 MB/s) - 'input/image.jpg' saved [20841/20841]
+
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output resize-image
+Resizing image ...
+Image resized and saved!
+root@ubuntu:~/project$ docker run --rm -v $(pwd)/input:/data/input -v $(pwd)/output:/data/output watermark-image
+Adding watermark ...
+Watermarked image saved !
+root@ubuntu:~/project$ python3 -m https.server 8080
+/usr/bin/python3: Error while finding module specification for 'https.server' (ModuleNotFoundError: No module named 'https')
+root@ubuntu:~/project$ python3 -m http.server 8080
+Serving HTTP on 0.0.0.0 port 8080 (http://0.0.0.0:8080/) ...
+10.244.3.236 - - [02/Apr/2026 10:29:20] "GET / HTTP/1.1" 200 -
+10.244.3.236 - - [02/Apr/2026 10:29:21] code 404, message File not found
+10.244.3.236 - - [02/Apr/2026 10:29:21] "GET /favicon.ico HTTP/1.1" 404 -
+10.244.6.67 - - [02/Apr/2026 10:29:37] "GET /input/ HTTP/1.1" 200 -
+10.244.6.67 - - [02/Apr/2026 10:29:45] "GET /input/image.jpg HTTP/1.1" 200 -
+10.244.6.67 - - [02/Apr/2026 10:29:54] "GET /output/ HTTP/1.1" 200 -
+10.244.6.67 - - [02/Apr/2026 10:30:00] "GET /output/resized.jpg HTTP/1.1" 200 -
+10.244.5.175 - - [02/Apr/2026 10:30:07] "GET /output/watermarked.jpg HTTP/1.1" 200 -
+10.244.3.236 - - [02/Apr/2026 10:30:17] "GET /resize/ HTTP/1.1" 200 -
+10.244.3.37 - - [02/Apr/2026 10:30:23] "GET /resize/app.py HTTP/1.1" 200 -
+10.244.3.236 - - [02/Apr/2026 10:30:29] "GET /resize/Dockerfile HTTP/1.1" 200 -
+10.244.6.67 - - [02/Apr/2026 10:30:34] "GET /watermark/ HTTP/1.1" 200 -
+10.244.6.67 - - [02/Apr/2026 10:30:38] "GET /watermark/app.py HTTP/1.1" 200 -
