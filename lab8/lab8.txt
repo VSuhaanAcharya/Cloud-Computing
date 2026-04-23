@@ -125,6 +125,7 @@ mysql> SELECT * FROM orders;
 
 mysql> DELETE FROM customers WHERE city='Chicago';
 ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`shop`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+
 mysql> DROP TABLE orders;
 Query OK, 0 rows affected (0.02 sec)
 
