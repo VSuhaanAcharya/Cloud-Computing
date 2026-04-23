@@ -1,1 +1,131 @@
+Initialising Scenario...... done
 
+root@ubuntu:~$ docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:8
+Unable to find image 'mysql:8' locally
+8: Pulling from library/mysql
+bb5107df7baa: Pull complete 
+f035ba2a42b8: Pull complete 
+9b9c5f1fb954: Pull complete 
+8b565c834d59: Pull complete 
+aa6e6468bcd7: Pull complete 
+df58ba29e471: Pull complete 
+506bcb676d56: Pull complete 
+97a156be315d: Pull complete 
+6b97080db618: Pull complete 
+182cd03161a6: Pull complete 
+Digest: sha256:43bd9764df60666fb2ba2cf8217dd17b3d2414c150005d2fdd07a0cd73d3b7f5
+Status: Downloaded newer image for mysql:8
+f17c22994d6232d048c823a7327a4cb75cccce9baf3ef101f76e216705dded4f
+root@ubuntu:~$ docker exec -it mysql1 mysql -uroot -proot
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.4.9 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE shop;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use shop;
+Database changed
+mysql> CREATE TABLE customers (id INT AUTO_INCREMENT PRIMARY KEY,name VARCHAR(100),city VARCHAR(100));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE orders (id INT AUTO_INCREMENT PRIMARY KEY,customer_id INT,product  VARCHAR(100),amount INT,FOREIGN KEY (customer_id) REFERENCES customers(id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO customers (name,city) VALUES ('Alice','New York'),('Bob','Chicago'),('Charlie','Los Angles');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO orders (customer_id,product,amount) VALUES (1,'Laptop',1200),(1,'Mouse',25),(2,'Phone',800),(3,'Tablet',300),(2,'keyword',45);
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT o.id,o.product,o.amount FROM orders o JOIN customers c ON o.customer_id=c.id WHERE c.name='Alice';
++----+---------+--------+
+| id | product | amount |
++----+---------+--------+
+|  1 | Laptop  |   1200 |
+|  2 | Mouse   |     25 |
++----+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT c.name,o.product,o.amount FROM customers c JOIN orders o ON c.id=o.customer_id WHERE o.amount>500;
++-------+---------+--------+
+| name  | product | amount |
++-------+---------+--------+
+| Alice | Laptop  |   1200 |
+| Bob   | Phone   |    800 |
++-------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT name FROM customers WHERE id NOT IN (SELECT DISTINCT customer_id FROM orders);
+Empty set (0.00 sec)
+
+mysql> SELECT c.name,SUM(o.amount) AS total_spent FROM customers c JOIN orders o ON c.id=o.customer_id GROUP BY c.name ORDER BY total_spent DESC;
++---------+-------------+
+| name    | total_spent |
++---------+-------------+
+| Alice   |        1225 |
+| Bob     |         845 |
+| Charlie |         300 |
++---------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE customers;
++-------+--------------+------+-----+---------+----------------+
+| Field | Type         | Null | Key | Default | Extra          |
++-------+--------------+------+-----+---------+----------------+
+| id    | int          | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(100) | YES  |     | NULL    |                |
+| city  | varchar(100) | YES  |     | NULL    |                |
++-------+--------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> DESCRIBE orders;
++-------------+--------------+------+-----+---------+----------------+
+| Field       | Type         | Null | Key | Default | Extra          |
++-------------+--------------+------+-----+---------+----------------+
+| id          | int          | NO   | PRI | NULL    | auto_increment |
+| customer_id | int          | YES  | MUL | NULL    |                |
+| product     | varchar(100) | YES  |     | NULL    |                |
+| amount      | int          | YES  |     | NULL    |                |
++-------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM customers;
++----+---------+------------+
+| id | name    | city       |
++----+---------+------------+
+|  1 | Alice   | New York   |
+|  2 | Bob     | Chicago    |
+|  3 | Charlie | Los Angles |
++----+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT * FROM orders;
++----+-------------+---------+--------+
+| id | customer_id | product | amount |
++----+-------------+---------+--------+
+|  1 |           1 | Laptop  |   1200 |
+|  2 |           1 | Mouse   |     25 |
+|  3 |           2 | Phone   |    800 |
+|  4 |           3 | Tablet  |    300 |
+|  5 |           2 | keyword |     45 |
++----+-------------+---------+--------+
+5 rows in set (0.01 sec)
+
+mysql> DELETE FROM customers WHERE city='Chicago';
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`shop`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+mysql> DROP TABLE orders;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> 
